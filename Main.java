@@ -15,8 +15,24 @@ import java.time.Duration;
 
 public class Main {
 
+        static int volSr=0;
+
+        static void setVolSr() {
+                volSr=0;
+                Iterator<Vol> it = listVolSort.iterator();
+                LocalDateTime timeNow = LocalDateTime.now();
+                while (it.hasNext()) {
+                        Vol v = it.next();
+                        Duration dr = Duration.between(timeNow, v.getDateDep());
+                        if (dr.getSeconds() <= 600 && dr.getSeconds() >= -600) {
+                                volSr++;
+                        }
+                }
+        }
+
         static void menuPrinc() {
                 trierVolEnt();
+                setVolSr();
                 System.out.print("\033[H\033[2J");
                 System.out.flush();     
                 System.out.println("\t\t\t\t"+" _____          __ _         ___            _");                                                                         
@@ -29,7 +45,7 @@ public class Main {
                 System.out.println("\n");
                 System.out.println("---------------------------------------------------Statistiques---------------------------------------------------------");
                 System.out.println("|                                                                                                                      |");
-                System.out.println("|\t\tNombre de vol entrant : "+volTriEnt.size()+"\t\t|\t\tNombre de vol sortant : "+listVolSort.size()+"\t\t\t|");
+                System.out.println("|\t\tNombre de vol entrant : "+volTriEnt.size()+"\t\t|\t\tNombre de vol sortant : "+volSr+"\t\t\t|");
                 System.out.println("|                                                                                                                      |");
                 System.out.println(
                                 "------------------------------------------------------------------------------------------------------------------------");
@@ -84,6 +100,8 @@ public class Main {
         static List<Vol> volTriEnt = new ArrayList<Vol>();
 
         static void trierVolEnt() {
+                volTriEnt = new ArrayList<Vol>();
+                List<Vol> volSec = new ArrayList<>(listVolEnt);
                 Iterator<Vol> it = listVolEnt.iterator();
                 LocalDateTime timeNow = LocalDateTime.now();
                 while (it.hasNext()) {
@@ -138,12 +156,15 @@ public class Main {
                                 it.remove();
                         }
                 }
+
+                listVolEnt=new ArrayList<>(volSec);
                 
 
         }
 
         static void atterrissage() {
-                trierVolEnt();
+                
+               trierVolEnt();
                 List<String> vols=new ArrayList<>();
                 System.out.print("\033[H\033[2J");
                 System.out.flush();
@@ -190,7 +211,7 @@ public class Main {
                         while (it.hasNext()) {
                                 Vol v = it.next();
                                 if (v.getNumVol().equals(numV))
-                                        pistes(v, 1);
+                                        pistes(v);
                         }
                 }else
                 {
@@ -240,7 +261,7 @@ public class Main {
                 {
                         Vol v =it.next();
                         if(v.getNumVol().equals(numV))
-                                pistes(v,1);
+                                pistes(v);
                 }
         }
         else
@@ -280,7 +301,7 @@ public class Main {
 
         }
 
-        static void pistes(Vol v, int type) {
+        static void pistes(Vol v) {
                 System.out.print("\033[H\033[2J");
                 System.out.flush();
                 System.out.println("\t\t\t\t\t"+"\033[4;32m"+"Application de Gestion du Trafic Aerien"+"\033[0m"+"\033[1;32m");
@@ -301,36 +322,6 @@ public class Main {
                 String piste = sc.nextLine();
                 if(piste.equals("q"))
                 menuPrinc();
-                /*if(type==1){
-                
-                Piste p = null;
-                Iterator<Piste> itp = listPs.iterator();
-                while (itp.hasNext()) {
-                        p = itp.next();
-                        if (p.getCode().equals(piste))
-                                break;
-                }
-                p.setVol(v);
-                v.setPiste(piste);}
-                else{
-                      /*  Vol v = null;
-                Iterator<Vol> itv = listVolSort.iterator();
-                while (itv.hasNext()) {
-                        v = itv.next();
-                        if (v.getNumVol().equals(numV))
-                                break;
-                }
-                Piste p = null;
-                Iterator<Piste> itp = listPs.iterator();
-                while (itp.hasNext()) {
-                        p = itp.next();
-                        if (p.getCode().equals(piste))
-                                break;
-                }
-                p.setVol(v);
-                v.setPiste(piste);
-
-                }*/
               if (lesPistes.contains(piste)) {
                 Piste p = null;
                 Iterator<Piste> itp = listPs.iterator();
@@ -344,7 +335,7 @@ public class Main {
                 menuPrinc();
         }else
         {
-                pistes(v, type);
+                pistes(v);
         }
         }
 
