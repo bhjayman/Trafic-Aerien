@@ -131,11 +131,6 @@ public class Vol implements Comparator<Vol> {
         this.avion = avion;
     }
 
-    /*@Override
-    public int compareTo(Vol v) {
-        // TODO Auto-generated method stub
-        return (avion.getNK() - v.getAvion().getNK());
-    }*/
 
     @Override
     public int compare(Vol o1, Vol o2) {
@@ -143,6 +138,9 @@ public class Vol implements Comparator<Vol> {
         return 0;
     }
 
+    /*
+    **Comparer les vols par leur niveau de kerosene
+    */
     static Comparator<Vol> compNK() {
         return new Comparator<Vol>() {
 
@@ -154,6 +152,10 @@ public class Vol implements Comparator<Vol> {
             // compare using attribute 1
         };
     }
+
+    /*
+    **Comparer en utilisant la date de départ
+    */
 
     static Comparator<Vol> compDd() {
         return new Comparator<Vol>() {
